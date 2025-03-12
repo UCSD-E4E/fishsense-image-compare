@@ -1,0 +1,112 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:E4E.FishSense.ImageCompare.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="E4E.FishSense.ImageCompare.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="E4E.FishSense.ImageCompare">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <Grid ColumnDefinitions="*,Auto,*,Auto,Auto"
+          RowDefinitions="Auto,Auto,*">
+        
+        <TextBox Grid.Row="0"
+                 Grid.Column="0"
+                 Text="{Binding LeftImageUri}"
+                 IsEnabled="False"/>
+        <Button Grid.Row="0"
+                Grid.Column="1"
+                Command="{Binding BrowseLeftImageCommand}"
+                CommandParameter="{Binding $parent[Window]}">
+            Browse left...
+        </Button>
+        
+        <TextBox Grid.Row="0"
+                 Grid.Column="2"
+                 Text="{Binding RightImageUri}"
+                 IsEnabled="False"/>
+        <Button Grid.Row="0"
+                Grid.Column="3"
+                Command="{Binding BrowseRightImageCommand}"
+                CommandParameter="{Binding $parent[Window]}">
+            Browse right...
+        </Button>
+        
+        <Grid Grid.Column="0"
+              Grid.Row="1"
+              Grid.ColumnSpan="2"
+              RowDefinitions="*"
+              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto">
+            <TextPresenter Grid.Column="0">Left Image Position: (</TextPresenter>
+            <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="{Binding LeftCropPositionX}" />
+            <TextPresenter Grid.Column="2">, </TextPresenter>
+            <NumericUpDown Grid.Column="3" ShowButtonSpinner="False" Value="{Binding LeftCropPositionY}" />
+            <TextPresenter Grid.Column="4">) Size: (</TextPresenter>
+            <NumericUpDown Grid.Column="5" ShowButtonSpinner="False" Value="{Binding LeftCropWidth}" />
+            <TextPresenter Grid.Column="6">, </TextPresenter>
+            <NumericUpDown Grid.Column="7" ShowButtonSpinner="False" Value="{Binding LeftCropHeight}" />
+            <TextPresenter Grid.Column="8">)</TextPresenter>
+        </Grid>
+        
+        <Grid Grid.Column="2"
+              Grid.Row="1"
+              Grid.ColumnSpan="2"
+              RowDefinitions="*"
+              ColumnDefinitions="Auto,*,Auto,*,Auto,*,Auto,*,Auto">
+            <TextPresenter Grid.Column="0">Right Image Position: (</TextPresenter>
+            <NumericUpDown Grid.Column="1" ShowButtonSpinner="False" Value="{Binding RightCropPositionX}" />
+            <TextPresenter Grid.Column="2">, </TextPresenter>
+            <NumericUpDown Grid.Column="3" ShowButtonSpinner="False" Value="{Binding RightCropPositionY}" />
+            <TextPresenter Grid.Column="4">) Size: (</TextPresenter>
+            <NumericUpDown Grid.Column="5" ShowButtonSpinner="False" Value="{Binding RightCropWidth}" />
+            <TextPresenter Grid.Column="6">, </TextPresenter>
+            <NumericUpDown Grid.Column="7" ShowButtonSpinner="False" Value="{Binding RightCropHeight}" />
+            <TextPresenter Grid.Column="8">)</TextPresenter>
+        </Grid>
+        
+        <Slider Grid.Row="2"
+                Grid.Column="4"
+                Orientation="Vertical"
+                Minimum="{Binding #ScrollViewer.Bounds.Height}"
+                Maximum="{Binding LeftImage.Size.Height}"
+                Value="{Binding Zoom}"/>
+        
+        <ScrollViewer Grid.Column="0" 
+                      Grid.Row="2"
+                      Grid.ColumnSpan="4"
+                      HorizontalScrollBarVisibility="Auto"
+                      x:Name="ScrollViewer">
+            <Grid ColumnDefinitions="*" RowDefinitions="Auto,*">
+                <Slider Grid.Row="0"
+                        Width="{Binding #LeftImage.Bounds.Width}"
+                        Maximum="{Binding #LeftImage.Bounds.Width}"
+                        Value="{Binding SliderValue}"/>
+                
+                <Image Grid.Row="1"
+                       Stretch="Uniform" 
+                       Source="{Binding LeftImageCropped}"
+                       Width="{Binding Zoom}"
+                       Height="{Binding Zoom}"
+                       x:Name="LeftImage"
+                       VerticalAlignment="Top"
+                       ZIndex="1"/>
+                <Image Grid.Row="1"
+                       Stretch="Uniform" 
+                       Source="{Binding RightImageCropped}"
+                       Width="{Binding Zoom}"
+                       Height="{Binding Zoom}"
+                       Clip="{Binding RightImageRectangle}"
+                       VerticalAlignment="Top"
+                       ZIndex="2" />
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>
