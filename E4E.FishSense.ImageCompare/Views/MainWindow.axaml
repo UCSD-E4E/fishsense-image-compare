@@ -86,24 +86,24 @@
                       x:Name="ScrollViewer">
             <Grid ColumnDefinitions="*" RowDefinitions="Auto,*">
                 <Slider Grid.Row="0"
-                        Width="{Binding #LeftImage.Bounds.Width}"
-                        Maximum="{Binding #LeftImage.Bounds.Width}"
+                        Width="{Binding #RightImage.Bounds.Width}"
+                        Maximum="{Binding #RightImage.Bounds.Width}"
                         Value="{Binding SliderValue}"/>
                 
-                <Image Grid.Row="1"
-                       Stretch="Uniform" 
-                       Source="{Binding LeftImageCropped}"
-                       Width="{Binding Zoom}"
-                       Height="{Binding Zoom}"
-                       x:Name="LeftImage"
-                       VerticalAlignment="Top"
-                       ZIndex="1"/>
                 <Image Grid.Row="1"
                        Stretch="Uniform" 
                        Source="{Binding RightImageCropped}"
                        Width="{Binding Zoom}"
                        Height="{Binding Zoom}"
-                       Clip="{Binding RightImageRectangle}"
+                       x:Name="RightImage"
+                       VerticalAlignment="Top"
+                       ZIndex="1"/>
+                <Image Grid.Row="1"
+                       Stretch="Uniform" 
+                       Source="{Binding LeftImageCropped}"
+                       Width="{Binding Zoom}"
+                       Height="{Binding Zoom}"
+                       Clip="{Binding LeftImageRectangle}"
                        VerticalAlignment="Top"
                        ZIndex="2" />
             </Grid>

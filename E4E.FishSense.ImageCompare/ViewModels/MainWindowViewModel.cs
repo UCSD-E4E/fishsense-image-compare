@@ -15,6 +15,7 @@ public class MainWindowViewModel : ViewModelBase
 {
     private Bitmap? _leftImage;
     private CroppedBitmap? _leftImageCropped;
+    private RectangleGeometry? _leftImageRectangle;
     private Uri? _leftImageUri;
     private int _leftCropPositionX;
     private int _leftCropPositionY;
@@ -22,7 +23,6 @@ public class MainWindowViewModel : ViewModelBase
     private int _leftCropHeight;
     private Bitmap? _rightImage;
     private CroppedBitmap? _rightImageCropped;
-    private RectangleGeometry? _rightImageRectangle;
     private Uri? _rightImageUri;
     private int _rightCropPositionX;
     private int _rightCropPositionY;
@@ -49,6 +49,12 @@ public class MainWindowViewModel : ViewModelBase
     {
         get => _leftImageCropped;
         set => SetProperty(ref _leftImageCropped, value);
+    }
+
+    public RectangleGeometry? LeftImageRectangle
+    {
+        get => _leftImageRectangle;
+        set => SetProperty(ref _leftImageRectangle, value);
     }
 
     public Uri? LeftImageUri
@@ -121,12 +127,6 @@ public class MainWindowViewModel : ViewModelBase
         set => SetProperty(ref _rightImageCropped, value);
     }
 
-    public RectangleGeometry? RightImageRectangle
-    {
-        get => _rightImageRectangle;
-        set => SetProperty(ref _rightImageRectangle, value);
-    }
-
     public Uri? RightImageUri
     {
         get => _rightImageUri;
@@ -183,7 +183,7 @@ public class MainWindowViewModel : ViewModelBase
         set
         {
             SetProperty(ref _sliderValue, value);
-            RightImageRectangle = GetRightImageRectangle();
+            LeftImageRectangle = GetLeftImageRectangle();
         }
     }
 
@@ -250,8 +250,8 @@ public class MainWindowViewModel : ViewModelBase
     private PixelRect GetRightImageCrop() =>
         new (RightCropPositionX, RightCropPositionY, RightCropWidth, RightCropHeight);
 
-    private RectangleGeometry? GetRightImageRectangle()
+    private RectangleGeometry? GetLeftImageRectangle()
     {
-        return RightImage == null ? null : new RectangleGeometry(new Rect(0, 0, SliderValue, RightImage.Size.Height));
+        return LeftImage == null ? null : new RectangleGeometry(new Rect(0, 0, SliderValue, LeftImage.Size.Height));
     }
 }
